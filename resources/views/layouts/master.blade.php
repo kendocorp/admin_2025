@@ -10,14 +10,18 @@
   <link rel="stylesheet" href="{{ asset('css/adminlte.min.css') }}">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="{{ asset('fontawesome/css/all.min.css') }}">
- 
+  <!-- Kendo Theme-->
+  <link rel="stylesheet" href="{{ asset('css/kendo.css') }}">
+  
+  <link rel="icon" href="{{ asset('img/kendo_isotipo.png') }}" type="image/x-icon">
+
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
 
   <!-- Preloader -->
   <div class="preloader flex-column justify-content-center align-items-center">
-    <img class="animation__shake" src="{{ asset('img/daniel_lanao_isotipo.png') }}" alt="AdminLogo" height="60" width="60">
+    <img class="animation__shake" src="{{ asset('img/kendo_isotipo.png') }}" alt="AdminLogo" height="60" width="60">
   </div>
 
   @include('layouts.navbar') 

@@ -1,0 +1,14 @@
+/* Primary Color */
+:root {
+    --primary-color: #002060;
+}
+
+/* Secondary Color */
+:root {
+    --secondary-color: #DEEBF7;
+}
+
+.navbar-kendo {
+    background-color: var(--primary-color);
+    color: #fff;
+  }
