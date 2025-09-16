@@ -18,12 +18,19 @@
       <!-- Sidebar Menu -->
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-        <li class="nav-item">
-            <a href="{{ route('dashboard') }}" class="nav-link active">
+          <li class="nav-item">
+            <a href="{{ route('dashboard') }}" class="nav-link {{ (request()->routeIs('dashboard') || request()->routeIs('home')) ? 'active' : '' }}">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>Dashboard</p>
             </a>
-          </li>         
+          </li>      
+          
+          <li class="nav-item">
+            <a href="{{ route('cognito_users.index') }}" class="nav-link {{ (request()->routeIs('cognito_users.index')) ? 'active' : '' }}">
+              <i class="nav-icon fas fa-users text-danger" ></i>
+              <p>Usuarios Cognito</p>
+            </a>
+          </li>       
         
           
         </ul>
