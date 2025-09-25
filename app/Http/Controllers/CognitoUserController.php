@@ -17,8 +17,8 @@ class CognitoUserController extends Controller
      */
     public function index()
     {
-        $cognito_users = CognitoUser::all();
-        return view('cognito_users.index', compact('cognito_users'));
+        // Using dummy data instead of database for frontend display
+        return view('cognito_users.index');
     }
 
     /**

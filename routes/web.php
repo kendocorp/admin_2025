@@ -3,7 +3,9 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CognitoUserController;
+use App\Http\Controllers\EntityController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\CognitoUserBatchController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
@@ -15,5 +17,7 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::resource('cognito_users', CognitoUserController::class);
+Route::resource('entities', EntityController::class);
+Route::resource('cognito_user_batches', CognitoUserBatchController::class);
 
 require __DIR__.'/auth.php';

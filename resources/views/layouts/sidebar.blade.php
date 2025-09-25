@@ -30,7 +30,14 @@
               <i class="nav-icon fas fa-users text-danger" ></i>
               <p>Usuarios Cognito</p>
             </a>
-          </li>       
+          </li>   
+          
+          <li class="nav-item">
+            <a href="{{ route('entities.index') }}" class="nav-link {{ (request()->routeIs('entities.index')) ? 'active' : '' }}">
+              <i class="nav-icon fas fa-building" ></i>
+              <p>Entidades</p>
+            </a>
+          </li>   
         
           
         </ul>
