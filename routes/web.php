@@ -17,6 +17,7 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::resource('cognito_users', CognitoUserController::class);
+Route::get('cognito_users/export/excel', [CognitoUserController::class, 'exportExcel'])->name('cognito_users.export.excel');
 Route::resource('entities', EntityController::class);
 Route::resource('cognito_user_batches', CognitoUserBatchController::class);
 

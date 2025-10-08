@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CognitoUser;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class CognitoUserController extends Controller
 {
@@ -17,8 +18,9 @@ class CognitoUserController extends Controller
      */
     public function index()
     {
-        // Using dummy data instead of database for frontend display
-        return view('cognito_users.index');
+        
+        $cognito_users = CognitoUser::all();
+        return view('cognito_users.index', compact('cognito_users'));
     }
 
     /**
@@ -125,5 +127,54 @@ class CognitoUserController extends Controller
             return redirect()->route('cognito_users.index')
                            ->with('error', 'Failed to delete cognito user: ' . $e->getMessage());
         }
+    }
+
+    /**
+     * Export cognito users to Excel
+     */
+    public function exportExcel()
+    {
+        $cognito_users = CognitoUser::all();
+        
+        $filename = 'cognito_users_' . date('Y-m-d_H-i-s') . '.csv';
+        
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+        ];
+        
+        $callback = function() use ($cognito_users) {
+            $file = fopen('php://output', 'w');
+            
+            // Add CSV headers
+            fputcsv($file, [
+                'ID',
+                'Kendo User',
+                'Sub',
+                'Password',
+                'Name',
+                'Last Name',
+                'Email',
+                'Status'
+            ]);
+            
+            // Add data rows
+            foreach ($cognito_users as $user) {
+                fputcsv($file, [
+                    $user->id,
+                    $user->kendo_user,
+                    $user->sub ?? 'N/A',
+                    $user->password ?? 'N/A',
+                    $user->name,
+                    $user->last_name ?? 'N/A',
+                    $user->email ?? 'N/A',
+                    $user->status ?? 'N/A'
+                ]);
+            }
+            
+            fclose($file);
+        };
+        
+        return response()->stream($callback, 200, $headers);
     }
 }

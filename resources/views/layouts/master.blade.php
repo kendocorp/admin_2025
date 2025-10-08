@@ -15,6 +15,7 @@
   
   <link rel="icon" href="{{ asset('img/kendo_isotipo.png') }}" type="image/x-icon">
 
+  @yield('head')
 </head>
 <body class="hold-transition sidebar-mini layout-fixed text-sm">
 <div class="wrapper">
@@ -58,5 +59,7 @@
 <script src="{{ asset('bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 <!-- AdminLTE App -->
 <script src="{{ asset('js/adminlte.js') }}"></script>
+
+@yield('scripts')
 </body>
 </html>

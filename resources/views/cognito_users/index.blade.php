@@ -2,6 +2,12 @@
 
 @section('title', 'Cognito Users')
 
+@section('head')
+<!-- DataTables CSS -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.bootstrap4.min.css">
+@endsection
+
 @section('content')
     <!-- Content Header (Page header) -->
     <div class="content-header">
@@ -14,7 +20,7 @@
                 </a>
                 <a href="{{ route('cognito_user_batches.index') }}" class="btn btn-success btn-sm">
                   <i class="fas fa-upload"></i> Crear Batch
-                </a>
+                </a>                              
               </h1>
               
             </div><!-- /.col -->
@@ -58,44 +64,31 @@
                   @endif
                 
                   <div class="table-responsive">
-                    <table class="table table-bordered table-striped table-sm">
+                    <table id="cognitoUsersTable" class="table table-bordered table-striped table-sm">
                       <thead class="thead-dark">
                         <tr>
                           <th>ID</th>
+                          <th>Kendo User</th>
+                          <th>Sub</th>
+                          <th>Password</th>                          
                           <th>Name</th>
                           <th>Last Name</th>
                           <th>Email</th>
-                          <th>Sub</th>
-                          <th>Kendo User</th>
-                          <th>Password</th>                          
+                          <th>Status</th>
                           <th>Actions</th>
                         </tr>
                       </thead>
-                      <tbody>
-                        @php
-                          $cognito_users = [
-                            ['id' => 1, 'name' => 'Juan', 'last_name' => 'Pérez', 'email' => 'juan.perez@harvard.edu', 'sub' => 'sub-001', 'kendo_user' => 'harvard001@kendocorp.com', 'password' => 'Kd8#mN2p'],
-                            ['id' => 2, 'name' => 'María', 'last_name' => 'González', 'email' => 'maria.gonzalez@harvard.edu', 'sub' => 'sub-002', 'kendo_user' => 'harvard002@kendocorp.com', 'password' => 'Mx9$vL4q'],
-                            ['id' => 3, 'name' => 'Carlos', 'last_name' => 'Rodríguez', 'email' => 'carlos.rodriguez@harvard.edu', 'sub' => 'sub-003', 'kendo_user' => 'harvard003@kendocorp.com', 'password' => 'Cz7&nR5t'],
-                            ['id' => 4, 'name' => 'Ana', 'last_name' => 'Martínez', 'email' => 'ana.martinez@harvard.edu', 'sub' => 'sub-004', 'kendo_user' => 'harvard004@kendocorp.com', 'password' => 'Ay6*wS3u'],
-                            ['id' => 5, 'name' => 'Luis', 'last_name' => 'Hernández', 'email' => 'luis.hernandez@harvard.edu', 'sub' => 'sub-005', 'kendo_user' => 'harvard005@kendocorp.com', 'password' => 'Lh4@tY8i'],
-                            ['id' => 6, 'name' => 'Sofia', 'last_name' => 'López', 'email' => 'sofia.lopez@harvard.edu', 'sub' => 'sub-006', 'kendo_user' => 'harvard006@kendocorp.com', 'password' => 'Sl2#oI9e'],
-                            ['id' => 7, 'name' => 'Diego', 'last_name' => 'García', 'email' => 'diego.garcia@harvard.edu', 'sub' => 'sub-007', 'kendo_user' => 'harvard007@kendocorp.com', 'password' => 'Dg5$pA6r'],
-                            ['id' => 8, 'name' => 'Valentina', 'last_name' => 'Morales', 'email' => 'valentina.morales@harvard.edu', 'sub' => 'sub-008', 'kendo_user' => 'harvard008@kendocorp.com', 'password' => 'Vm3&qE7y'],
-                            ['id' => 9, 'name' => 'Andrés', 'last_name' => 'Jiménez', 'email' => 'andres.jimenez@harvard.edu', 'sub' => 'sub-009', 'kendo_user' => 'harvard009@kendocorp.com', 'password' => 'Aj1*wR4u'],
-                            ['id' => 10, 'name' => 'Camila', 'last_name' => 'Ruiz', 'email' => 'camila.ruiz@harvard.edu', 'sub' => 'sub-010', 'kendo_user' => 'harvard010@kendocorp.com', 'password' => 'Cr8@tI2o']
-                          ];
-                        @endphp
+                      <tbody>                        
                         @forelse($cognito_users as $user)
                           <tr>
                             <td>{{ $user['id'] }}</td>
+                            <td>{{ $user['kendo_user'] }}</td>
+                            <td>{{ $user['sub'] ?? 'N/A' }}</td>
+                            <td><code>{{ $user['password'] ?? 'N/A' }}</code></td>
                             <td>{{ $user['name'] }}</td>
                             <td>{{ $user['last_name'] ?? 'N/A' }}</td>
                             <td>{{ $user['email'] ?? 'N/A' }}</td>
-                            <td>{{ $user['sub'] ?? 'N/A' }}</td>
-                            <td>{{ $user['kendo_user'] }}</td>
-                            <td><code>{{ $user['password'] ?? 'N/A' }}</code></td>
-                            
+                            <td>{{ $user['status'] ?? 'N/A' }}</td>
                             <td>
                               <div class="btn-group" role="group">
                                 <a href="{{ route('cognito_users.edit', $user['id']) }}" class="btn btn-warning btn-sm" title="Edit">
@@ -169,4 +162,75 @@
         </div>
       </div>
       @endforeach
+@endsection
+
+@section('scripts')
+<!-- DataTables JS -->
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap4.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.bootstrap4.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
+
+<script>
+$(document).ready(function() {
+    $('#cognitoUsersTable').DataTable({
+        "responsive": true,
+        "lengthChange": true,
+        "autoWidth": false,
+        "pageLength": 25,
+        "language": {
+            "url": "//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json"
+        },
+        "columnDefs": [
+            {
+                "targets": [8], // Actions column (index 8)
+                "orderable": false,
+                "searchable": false
+            }
+        ],
+        "order": [[ 0, "desc" ]], // Sort by ID descending by default
+        "dom": 'Bfrtip',
+        "buttons": [
+            {
+                extend: 'excel',
+                text: '<i class="fas fa-file-excel"></i> Excel',
+                className: 'btn btn-success btn-sm',
+                title: 'Cognito Users - ' + new Date().toLocaleDateString(),
+                exportOptions: {
+                    columns: [0, 1, 2, 3, 4, 5, 6, 7] // Export all columns except Actions
+                }
+            },
+            {
+                extend: 'csv',
+                text: '<i class="fas fa-file-csv"></i> CSV',
+                className: 'btn btn-info btn-sm',
+                title: 'Cognito Users - ' + new Date().toLocaleDateString(),
+                exportOptions: {
+                    columns: [0, 1, 2, 3, 4, 5, 6, 7] // Export all columns except Actions
+                }
+            },
+            {
+                extend: 'pdf',
+                text: '<i class="fas fa-file-pdf"></i> PDF',
+                className: 'btn btn-danger btn-sm',
+                title: 'Cognito Users - ' + new Date().toLocaleDateString(),
+                exportOptions: {
+                    columns: [0, 1, 2, 3, 4, 5, 6, 7] // Export all columns except Actions
+                }
+            },
+            {
+                extend: 'print',
+                text: '<i class="fas fa-print"></i> Print',
+                className: 'btn btn-secondary btn-sm',
+                exportOptions: {
+                    columns: [0, 1, 2, 3, 4, 5, 6, 7] // Export all columns except Actions
+                }
+            }
+        ]
+    });
+});
+</script>
 @endsection
